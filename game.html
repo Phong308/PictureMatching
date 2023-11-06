@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Picture Matching Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="grid" id="grid"></div>
+        <div id="time-column" class="time-column">
+            <div id="time-label">Time:</div>
+            <div id="time-value">0:00</div>
+            <div id="hourglass"></div>
+        </div>
+        <h1 id="win-message" style="display: none">You Win</h1>
+        <h2 id="score" style="display: none">Score: <span id="score-value"></span></h2>
+    </div>
+
+    <script>
+        const characters = ["anh1", "anh2", "anh3", "anh4", "anh5", "anh6","anh7", "anh8", "anh9", "anh10", "anh11", "anh12"];
+        const pairs = characters.concat(characters);
+        let gameStarted = false;
+        let timerInterval;
+        let gameCompleted = false;
+        let matchedPairs = 0;
+
+        // Hàm xáo trộn mảng ngẫu nhiên
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffleArray(pairs);
+
+        const grid = document.getElementById("grid");
+        pairs.forEach(character => {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            cell.dataset.symbol = character;
+            const image = document.createElement("img");
+            image.src = "Picture/" + character + ".jpg"; 
+            cell.appendChild(image);
+            grid.appendChild(cell);
+        });
+
+        let firstCell = null;
+        let secondCell = null;
+
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                if (!gameStarted) {
+                    gameStarted = true;
+                    startTimer();
+                }
+                if (!gameCompleted) {
+                    if (!firstCell) {
+                        firstCell = cell;
+                        showImage(cell);
+                    } else if (!secondCell && cell !== firstCell) {
+                        secondCell = cell;
+                        showImage(cell);
+                        checkMatch();
+                    }
+                }
+            });
+        });
+
+        function startTimer() {
+            let startTime = Date.now();
+            timerInterval = setInterval(() => {
+                if (!gameCompleted) {
+                    const elapsedTime = (Date.now() - startTime) / 1000; 
+                    const minutes = Math.floor(elapsedTime / 60);
+                    const seconds = Math.floor(elapsedTime % 60);
+                    document.getElementById("time-value").textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                }
+            }, 1000);
+        }
+
+        function showImage(cell) {
+            cell.style.opacity = 1;
+        }
+
+        function checkMatch() {
+            const firstSymbol = firstCell.getAttribute('data-symbol');
+            const secondSymbol = secondCell.getAttribute('data-symbol');
+
+            if (firstSymbol === secondSymbol) {
+                
+                firstCell.style.display = 'none';
+                secondCell.style.display = 'none';
+                firstCell = null;
+                secondCell = null;
+                matchedPairs += 2;
+
+                if (matchedPairs === characters.length) {
+                    gameCompleted = true;
+                    clearInterval(timerInterval);
+                    displayWinMessage();
+                }
+            } else {
+                
+                setTimeout(() => {
+                    hideImage(firstCell);
+                    hideImage(secondCell);
+                    firstCell = null;
+                    secondCell = null;
+                }, 1000);
+            }
+        }
+
+        function hideImage(cell) {
+            cell.style.opacity = 0;
+        }
+
+        function displayWinMessage() {
+            const timeValue = document.getElementById("time-value").textContent;
+            document.getElementById("win-message").style.display = "block";
+            document.getElementById("score").style.display = "block";
+            document.getElementById("score-value").textContent = timeValue;
+        }
+    </script>
+</body>
+</html>

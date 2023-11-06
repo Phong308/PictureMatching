@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 24px;
+    border: 2px solid #333;
+    border-radius: 5px;
+}
+
+#win-message {
+    display: none;
+    font-size: 36px;
+    margin-top: 20px;
+}
+
+.cell img {
+    width: 90px;
+    height: 90px;
+}
+.cell.clicked img {
+    opacity: 0.5; 
+}
+.time-column {
+    position: absolute;
+    top: 0;
+    right: 200px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh; 
+}
+#hourglass {
+    width: 60px;
+    height: 600px; 
+    background-color: #edb8dd;
+    margin: 10px;
+    position: relative;
+}
+#sand {
+    width: 50px;
+    height: 0;
+    background-color: #e6a823;
+    position: absolute;
+    bottom: 0;
+    transition: height 1s linear;
+}

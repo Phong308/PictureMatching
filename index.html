@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Picture Matching Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div  style="color:black" class="game-title" id="game-title"><h1> THE GAME SEARCHES FOR IDENTICAL CELLS</h1></div>
+        <br>
+        <br>
+        <button style="background-color: aquamarine;" id="start-button"><h3>Start game</h3></button>
+    </div>
+    <script>
+        const startButton = document.getElementById("start-button");
+        startButton.addEventListener('click', () => {
+            window.location.href = "game.html"; 
+        });
+    </script>
+</body>
+</html>
